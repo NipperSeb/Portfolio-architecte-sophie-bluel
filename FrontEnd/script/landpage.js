@@ -1,5 +1,4 @@
 //fetch API
-console.log(location);
 async function getWorks() {
   await fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
@@ -112,4 +111,14 @@ function RemoveClass(element, name) {
     }
   }
   element.className = arr1.join(" ");
+}
+//localstorage
+var userId = localStorage.getItem("userId");
+console.log(userId);
+if (userId == 1) {
+  const hide = document.querySelectorAll(".hide");
+
+  for (let i = 0; i < hide.length; i++) {
+    hide[i].style.display = "flex";
+  }
 }

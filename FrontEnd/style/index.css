@@ -130,20 +130,21 @@ table {
 }
 /** end reset css**/
 body {
-  max-width: 1140px;
-  margin: auto;
   font-family: "Work Sans";
   font-size: 14px;
 }
 header {
   display: flex;
   justify-content: space-between;
-  margin: 50px 0;
+  margin: 50px 150px;
 }
-section {
-  margin: 50px 0;
+main {
+  max-width: 1140px;
+  margin: auto 245px;
 }
-
+/* section {
+  margin: 50px 0;
+} */
 h1 {
   display: flex;
   flex-direction: column;
@@ -152,19 +153,64 @@ h1 {
   font-weight: 800;
   color: #b1663c;
 }
-
 h1 > span {
   font-family: "Work Sans";
   font-size: 10px;
   letter-spacing: 0.1em;
 }
-
 h2 {
   font-family: "Syne";
   font-weight: 700;
   font-size: 30px;
   color: #1d6154;
 }
+
+/* Mode edition */
+.container-hide {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: #e5e5e5;
+  height: 59px;
+}
+.container-hide button.publish-changes {
+  border-radius: 60px;
+  background: #ffffff;
+  border: 0;
+  height: 38px;
+  width: 216px;
+  margin-left: 21px;
+}
+.hide {
+  border: 0;
+  font-size: 14px;
+  display: none;
+}
+#introduction figure,
+#introduction article {
+  position: relative;
+}
+#introduction figure .hide {
+  position: absolute;
+  left: 0;
+  bottom: -30px;
+}
+#introduction article .hide {
+  position: absolute;
+  top: -50px;
+}
+#portfolio {
+  margin-top: 139px;
+  position: relative;
+}
+#portfolio .hide {
+  position: absolute;
+  top: 5px;
+  left: 37rem;
+}
+
+/* Header */
 nav ul {
   display: flex;
   align-items: center;
@@ -182,29 +228,37 @@ a {
   text-decoration: none;
   color: black;
 }
+
+/* Introduction */
 #introduction {
   display: flex;
   align-items: center;
+  gap: 72px;
+  margin-top: 139px;
 }
 #introduction figure {
-  flex: 1;
+  /* flex: 1; */
+  max-width: 474px;
 }
 #introduction img {
-  display: block;
-  margin: auto;
-  width: 80%;
+  height: 355px;
+  object-fit: cover;
+  /* display: block;
+  margin: auto;*/
 }
-
 #introduction article {
-  flex: 1;
+  position: relative;
+  /* flex: 1; */
+  width: 404px;
 }
 #introduction h2 {
   margin-bottom: 1em;
 }
-
 #introduction p {
   margin-bottom: 0.5em;
 }
+/* Works */
+
 #portfolio h2 {
   text-align: center;
   margin-bottom: 2em;
@@ -248,17 +302,17 @@ a {
 .gallery img {
   width: 100%;
 }
-/* remove all figure */
 .gallery .filterButton {
   display: none;
 }
-/* The "show" class is added to the filtered elements */
 .gallery .show {
   display: block;
 }
+
+/* Contact */
 #contact {
   width: 50%;
-  margin: auto;
+  margin: 57px auto;
 }
 #contact > * {
   text-align: center;
@@ -272,7 +326,6 @@ a {
   display: flex;
   flex-direction: column;
 }
-
 #contact input {
   height: 50px;
   font-size: 1.2em;
@@ -286,7 +339,6 @@ a {
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-
 input[type="submit"] {
   font-family: "Syne";
   font-weight: 700;
@@ -297,9 +349,10 @@ input[type="submit"] {
   text-align: center;
   border-radius: 60px;
 }
-
+/* Footer */
 footer nav ul {
   display: flex;
   justify-content: flex-end;
-  margin: 2em;
+  /* margin: 2em; */
+  margin: 0 107px 2em auto;
 }

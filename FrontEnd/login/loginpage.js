@@ -1,42 +1,45 @@
-console.log("coucou");
-console.log(location);
-//redirection landepage
-//message erreur si email! & password different
-//prevenir utilisateur
-//stocker le token pour envoi et suppression des travaux
-
-try {
-  const form = document.querySelector("#login");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const emailValue = document.querySelector("#email").value;
-    const passwordValue = document.querySelector("#psw").value;
-    fetch("http://localhost:5678/api/users/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: emailValue,
-        password: passwordValue,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.userId) {
-          let error = document.querySelector(".error");
-          error.innerText = "Erreur identifiant ou mot de passe";
-        } else {
-          loginOk(data);
-        }
-      })
-      .catch((err) => {});
+// Call API
+async function userLogin(email, password) {
+  const response = await fetch("http://localhost:5678/api/users/login", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password,
+    }),
   });
-} catch (error) {}
+  return response.json();
+}
 
-let loginOk = (datas) => {
+//fetch values
+const form = {
+  email: document.querySelector("#email"),
+  password: document.querySelector("#psw"),
+  submit: document.querySelector("#submit"),
+};
+
+let button = form.submit.addEventListener("click", (e) => {
+  e.preventDefault();
+  userLogin(form.email.value, form.password.value)
+    .then((data) => {
+      if (!data.userId) {
+        let error = document.querySelector(".error");
+        error.innerText = "Erreur dans l'identifiant ou le mot de passe";
+      } else {
+        loginOk(data);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+});
+
+// Store items
+function loginOk(datas) {
   localStorage.setItem("token", datas.token);
   localStorage.setItem("userId", datas.userId);
   document.location.href = "../../index.html";
-};
+}

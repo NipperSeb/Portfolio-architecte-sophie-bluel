@@ -11,9 +11,21 @@
 		rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="Frontend/style/index.css">
+	<script src="https://kit.fontawesome.com/3f00c5a4fa.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
+
+	<div class="hide container-hide">
+		<span>
+			<i class="fa-solid fa-pen-to-square"></i>
+			<b>Mode édition</b>
+		</span>
+		<button class="publish-changes">Publier les changements</button>
+	</div>
+
+
+	<!-- Header -->
 	<header>
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
@@ -21,17 +33,29 @@
 				<li class="projets">projets</li>
 				<li>contact</li>
 				<li><a href="Frontend/login/loginpage.html">login</a></li>
-
 				<li><img src="Frontend/assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
 		</nav>
 	</header>
 	<main>
+		<!-- Introduction -->
 		<section id="introduction">
 			<figure>
 				<img src="/Frontend/assets/images/sophie-bluel.png" alt="">
+
+				<button class="hide">
+					<i class="fa-solid fa-pen-to-square"></i>
+					<b>modifier</b>
+				</button>
+
 			</figure>
 			<article>
+
+				<button class="hide">
+					<i class="fa-solid fa-pen-to-square"></i>
+					<b>modifier</b>
+				</button>
+
 				<h2>Designer d'espace</h2>
 				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale
 					du chantier.</p>
@@ -42,13 +66,21 @@
 				</p>
 			</article>
 		</section>
+		<!-- Works -->
 		<section id="portfolio">
 			<h2>Mes Projets</h2>
+
+			<button class="hide">
+				<i class="fa-solid fa-pen-to-square"></i>
+				<b>modifier</b>
+			</button>
+
 			<div class="filter-item">
 			</div>
 			<div class="gallery">
 			</div>
 		</section>
+		<!-- Contact -->
 		<section id="contact">
 			<h2>Contact</h2>
 			<p>Vous avez un projet ? Discutons-en !</p>
@@ -63,7 +95,7 @@
 			</form>
 		</section>
 	</main>
-
+	<!-- Footer -->
 	<footer>
 		<nav>
 			<ul>
