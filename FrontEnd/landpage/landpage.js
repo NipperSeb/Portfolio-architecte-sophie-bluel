@@ -1,27 +1,29 @@
 //fetch API
-async function getWorks() {
+// localStorage.clear();
+async function getGallery() {
   await fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
     .then((data) => {
-      displayWorks(data);
+      displayGallery(data);
+      displayGalleryModale(data);
     });
 }
-getWorks();
+getGallery();
 
-async function getCategories() {
+async function getFilter() {
   await fetch("http://localhost:5678/api/categories")
     .then((response) => response.json())
     .then((data) => {
-      displayCategories(data);
+      displayFilter(data);
     });
 }
-getCategories();
+getFilter();
 
 // display all works
-const displayWorks = (data) => {
+const displayGallery = (data) => {
   for (let work of data) {
     let figure = document.createElement("figure");
-    figure.className = "filterButton";
+    figure.className = "filter-gallery";
     let words = work.category.name.split(" ");
     let wordFigure = words[0].toLowerCase();
     figure.classList.add(wordFigure);
@@ -40,8 +42,8 @@ const displayWorks = (data) => {
 };
 
 //display filters items
-const displayCategories = (data) => {
-  document.querySelector(".filter-item").innerHTML += `
+const displayFilter = (data) => {
+  document.querySelector(".filter-button").innerHTML += `
     <button class="btn active" id="all">
 			Tous
 		</button>
@@ -50,7 +52,7 @@ const displayCategories = (data) => {
     let words = category.name.split(" ");
     let wordButton = words[0].toLowerCase();
 
-    document.querySelector(".filter-item").innerHTML += `
+    document.querySelector(".filter-button").innerHTML += `
       <button class="btn" id=${wordButton}>
         ${category.name}
       </button>
@@ -61,27 +63,27 @@ const displayCategories = (data) => {
   const btn = document.querySelectorAll(".btn");
   btn.forEach((button) => {
     button.addEventListener("click", function (e) {
-      var idStr = this.id;
+      let idStr = this.id;
       filterSelection(idStr);
     });
   });
+
   // Add active class to the current control button (highlight it)
-  for (var i = 0; i < btn.length; i++) {
+  for (let i = 0; i < btn.length; i++) {
     btn[i].addEventListener("click", function () {
-      var current = document.getElementsByClassName("active");
+      let current = document.getElementsByClassName("active");
       current[0].className = current[0].className.replace(" active", "");
       this.className += " active";
     });
   }
 
-  filterSelection("all");
+  filterSelection("");
 };
 
 //display with listener
 function filterSelection(c) {
-  var x, i;
-  x = document.getElementsByClassName("filterButton");
-  if (c == "all") c = "";
+  let x, i;
+  x = document.getElementsByClassName("filter-gallery");
   // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
   for (i = 0; i < x.length; i++) {
     RemoveClass(x[i], "show");
@@ -90,7 +92,7 @@ function filterSelection(c) {
 }
 // Show filtered elements
 function AddClass(element, name) {
-  var i, arr1, arr2;
+  let i, arr1, arr2;
   arr1 = element.className.split(" ");
   arr2 = name.split(" ");
   for (i = 0; i < arr2.length; i++) {
@@ -102,7 +104,7 @@ function AddClass(element, name) {
 
 // Hide elements that are not selected
 function RemoveClass(element, name) {
-  var i, arr1, arr2;
+  let i, arr1, arr2;
   arr1 = element.className.split(" ");
   arr2 = name.split(" ");
   for (i = 0; i < arr2.length; i++) {
@@ -110,11 +112,11 @@ function RemoveClass(element, name) {
       arr1.splice(arr1.indexOf(arr2[i]), 1);
     }
   }
+
   element.className = arr1.join(" ");
 }
 //localstorage
-var userId = localStorage.getItem("userId");
-console.log(userId);
+let userId = localStorage.getItem("userId");
 if (userId == 1) {
   const hide = document.querySelectorAll(".hide");
 

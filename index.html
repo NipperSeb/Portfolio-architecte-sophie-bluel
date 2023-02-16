@@ -10,11 +10,12 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
 		rel="stylesheet">
 	<meta name="description" content="">
-	<link rel="stylesheet" href="Frontend/style/index.css">
+	<link rel="stylesheet" href="Frontend/landpage/landpage.css">
 	<script src="https://kit.fontawesome.com/3f00c5a4fa.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
+
 
 	<div class="hide container-hide">
 		<span>
@@ -23,6 +24,7 @@
 		</span>
 		<button class="publish-changes">Publier les changements</button>
 	</div>
+
 
 
 	<!-- Header -->
@@ -42,20 +44,17 @@
 		<section id="introduction">
 			<figure>
 				<img src="/Frontend/assets/images/sophie-bluel.png" alt="">
-
 				<button class="hide">
 					<i class="fa-solid fa-pen-to-square"></i>
 					<b>modifier</b>
 				</button>
-
 			</figure>
-			<article>
 
+			<article>
 				<button class="hide">
 					<i class="fa-solid fa-pen-to-square"></i>
 					<b>modifier</b>
 				</button>
-
 				<h2>Designer d'espace</h2>
 				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale
 					du chantier.</p>
@@ -65,21 +64,35 @@
 				<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice).
 				</p>
 			</article>
+
 		</section>
 		<!-- Works -->
 		<section id="portfolio">
 			<h2>Mes Projets</h2>
-
-			<button class="hide">
+			<button class="hide" id="button-works">
 				<i class="fa-solid fa-pen-to-square"></i>
 				<b>modifier</b>
 			</button>
-
-			<div class="filter-item">
+			<div class="filter-button">
 			</div>
 			<div class="gallery">
 			</div>
 		</section>
+
+		<!-- Modal content -->
+		<div id="container-modal" class="modal-container">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<h1>Galerie photo</h1>
+				<div class="gallery-modale">
+				</div>
+				<button id="add-image">Ajouter une photo</button>
+				<button id="delete-gallery">Suprimer la gallerie</button>
+			</div>
+		</div>
+
+
+
 		<!-- Contact -->
 		<section id="contact">
 			<h2>Contact</h2>
@@ -94,7 +107,9 @@
 				<input type="submit" value="Envoyer">
 			</form>
 		</section>
+
 	</main>
+
 	<!-- Footer -->
 	<footer>
 		<nav>
@@ -103,7 +118,10 @@
 			</ul>
 		</nav>
 	</footer>
-	<script defer src="/Frontend/script/landpage.js"></script>
+
+	<script defer src="/Frontend/landpage/landpage.js"></script>
+	<script defer src="/Frontend/modale/modale.js"></script>
+
 </body>
 
 </html>

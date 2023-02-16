@@ -1,0 +1,112 @@
+.modal-container {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Modal Content */
+.modal-container .modal-content {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 10px;
+  margin: auto;
+  width: min(70%, 630px);
+}
+
+/* The Close Button */
+.modal-container .close {
+  color: #000000;
+  align-self: flex-end;
+  font-size: 28px;
+  font-weight: bold;
+  padding-right: 36px;
+  padding-top: 32px;
+}
+
+.modal-container .close:hover,
+.modal-container .close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modal-container .modal-content h1 {
+  text-align: center;
+  font-weight: 400;
+  font-family: "Work Sans";
+  font-size: 26px;
+  color: #000000;
+}
+.modal-container .gallery-modale {
+  border-bottom: 1px solid #b3b3b3;
+  width: 66%;
+  margin: auto;
+  overflow: hidden;
+  margin-top: 51px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-column-gap: 7px;
+  grid-row-gap: 10px;
+  padding-bottom: 47px;
+}
+.modal-container figure {
+  max-width: 78px;
+  position: relative;
+}
+.modal-container img {
+  height: 104px;
+  object-fit: cover;
+}
+.modal-container #add-image,
+.modal-container #delete-gallery {
+  width: min(70%, 237px);
+  margin: auto;
+  border: 0;
+  font-size: 14px;
+}
+.modal-container #add-image {
+  margin-top: 48px;
+  background: #1d6154;
+  border-radius: 60px;
+  color: #ffffff;
+  height: 36px;
+  font-weight: 700;
+}
+.modal-container #delete-gallery {
+  margin-top: 23px;
+  background: none;
+  color: #d65353;
+  font-weight: 400;
+  margin-bottom: 48px;
+}
+.modal-container .edit-image {
+  font-size: 12px;
+  background: none;
+  border: 0;
+  font-family: "work sans";
+}
+.modal-container .trash-button {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  line-height: 17px;
+  background-color: black;
+  text-align: center;
+  position: absolute;
+  cursor: pointer;
+  top: 6px;
+  right: 6px;
+  border-radius: 2px;
+}
+.modal-container .trash-button i {
+  color: #ffffff;
+  width: 9px;
+  height: 9px;
+}
