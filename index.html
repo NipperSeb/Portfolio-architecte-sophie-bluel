@@ -41,7 +41,7 @@
 	</header>
 	<main>
 		<!-- Introduction -->
-		<section id="introduction">
+		<div id="introduction">
 			<figure>
 				<img src="/Frontend/assets/images/sophie-bluel.png" alt="">
 				<button class="hide">
@@ -65,11 +65,11 @@
 				</p>
 			</article>
 
-		</section>
+		</div>
 		<!-- Works -->
 		<section id="portfolio">
 			<h2>Mes Projets</h2>
-			<button class="hide" id="button-works">
+			<button class="hide" id="buttonAdd">
 				<i class="fa-solid fa-pen-to-square"></i>
 				<b>modifier</b>
 			</button>
@@ -80,16 +80,56 @@
 		</section>
 
 		<!-- Modal content -->
-		<div id="container-modal" class="modal-container">
-			<div class="modal-content">
-				<span class="close">&times;</span>
-				<h1>Galerie photo</h1>
+		<aside class="modal-container" id="containerModal">
+			<div class="modal-content" id="modalGallery">
+				<div class="container-icon"><span class="close"><i class="fa-solid fa-xmark"></i></span></div>
+
+				<h2>Galerie photo</h2>
 				<div class="gallery-modale">
 				</div>
-				<button id="add-image">Ajouter une photo</button>
+				<button id="addImage">Ajouter une photo</button>
 				<button id="delete-gallery">Suprimer la gallerie</button>
 			</div>
-		</div>
+			<!-- modal drag -->
+			<div class="modal-drag" id="dragContainer">
+				<div class="container-icon"><span class="arrow-left"><i class="fa-solid fa-arrow-left"></i></span><span
+						class="close"><i class="fa-solid fa-xmark"></i></span></div>
+				<h2>Ajout photo</h2>
+				<form id="uploadImage" enctype="multipart/form-data" method="post">
+					<div class="image-container">
+						<div id="newImage">
+							<img src="" alt="" id="image">
+						</div>
+						<i class="fa-regular fa-image clear"></i>
+
+						<input type="file" name="addNewpicture" accept="image/png, image/jpeg" id="addNewPicture" class="clear"
+							required>
+						<label for="addNewPicture" class="add-picture clear">+ Ajouter une photo</label>
+						<p class="clear">jpg, png : 4mo max</p>
+					</div>
+
+					<div class="container-input">
+						<label for="title">Titre</label>
+						<input id="title" name="title" type="text" required>
+						<label for="modalCategory">Catégorie</label>
+						<select name="category" id="modalCategory" required>
+							<option value="0"></option>
+							<option value="1">Objets</option>
+							<option value="2">Appartements</option>
+							<option value="3">Hôtel & restaurants</option>
+						</select>
+					</div>
+
+					<button type="submit" id="submit">Valider</button>
+
+				</form>
+			</div>
+
+			<!-- DragModal content -->
+
+		</aside>
+
+
 
 
 

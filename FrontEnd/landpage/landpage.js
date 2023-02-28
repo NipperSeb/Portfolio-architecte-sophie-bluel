@@ -1,15 +1,20 @@
 //fetch API
 // localStorage.clear();
+// localStorage.removeItem("token");
+
+window.addEventListener("load", () => {
+  getGallery();
+  getFilter();
+});
+
 async function getGallery() {
   await fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
     .then((data) => {
       displayGallery(data);
-      displayGalleryModale(data);
     });
 }
-getGallery();
-
+// getGallery();
 async function getFilter() {
   await fetch("http://localhost:5678/api/categories")
     .then((response) => response.json())
@@ -17,28 +22,29 @@ async function getFilter() {
       displayFilter(data);
     });
 }
-getFilter();
+// getFilter();
 
 // display all works
 const displayGallery = (data) => {
-  for (let work of data) {
+  data.map((work) => {
     let figure = document.createElement("figure");
     figure.className = "filter-gallery";
     let words = work.category.name.split(" ");
+
     let wordFigure = words[0].toLowerCase();
     figure.classList.add(wordFigure);
 
     let img = document.createElement("img");
     img.src = work.imageUrl;
     img.crossOrigin = "anonymous";
+    img.setAttribute("alt", work.title);
 
     let figcaption = document.createElement("figcaption");
-    figcaption.innerHTML = work.title;
-
+    figcaption.textContent = work.title;
     figure.appendChild(img);
     figure.appendChild(figcaption);
     document.querySelector(".gallery").appendChild(figure);
-  }
+  });
 };
 
 //display filters items
@@ -70,10 +76,11 @@ const displayFilter = (data) => {
 
   // Add active class to the current control button (highlight it)
   for (let i = 0; i < btn.length; i++) {
-    btn[i].addEventListener("click", function () {
+    btn[i].addEventListener("click", function (e) {
       let current = document.getElementsByClassName("active");
       current[0].className = current[0].className.replace(" active", "");
       this.className += " active";
+      e.stopImmediatePropagation();
     });
   }
 
@@ -112,7 +119,6 @@ function RemoveClass(element, name) {
       arr1.splice(arr1.indexOf(arr2[i]), 1);
     }
   }
-
   element.className = arr1.join(" ");
 }
 //localstorage
