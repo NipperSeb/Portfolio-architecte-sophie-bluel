@@ -222,6 +222,7 @@ nav li {
 li:hover,
 a:hover {
   color: #b1663c;
+  cursor: pointer;
 }
 a {
   text-decoration: none;

@@ -1,4 +1,9 @@
-// Call API
+/**
+ * Call API
+ * @param {*} email
+ * @param {*} password
+ * @returns
+ */
 async function userLogin(email, password) {
   const response = await fetch("http://localhost:5678/api/users/login", {
     method: "POST",
@@ -14,7 +19,9 @@ async function userLogin(email, password) {
   return response.json();
 }
 
-//fetch values
+/**
+ *fetch values
+ */
 const form = {
   email: document.querySelector("#email"),
   password: document.querySelector("#psw"),
@@ -29,7 +36,8 @@ let button = form.submit.addEventListener("click", (e) => {
         let error = document.querySelector(".error");
         error.innerText = "Erreur dans l'identifiant ou le mot de passe";
       } else {
-        loginOk(data);
+        loginOk(data.userId, data.token);
+        console.log(data);
       }
     })
     .catch((error) => {
@@ -37,9 +45,12 @@ let button = form.submit.addEventListener("click", (e) => {
     });
 });
 
-// Store items
-function loginOk(datas) {
-  localStorage.setItem("token", datas.token);
-  localStorage.setItem("userId", datas.userId);
+/**
+ * Store items loacstorage
+ * @param {*} datas
+ */
+function loginOk(id, token) {
+  localStorage.setItem("token", token);
+  localStorage.setItem("userId", id);
   document.location.href = "../../index.html";
 }

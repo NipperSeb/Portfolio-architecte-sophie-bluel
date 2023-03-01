@@ -1,12 +1,6 @@
-//fetch API
-// localStorage.clear();
-// localStorage.removeItem("token");
-
-window.addEventListener("load", () => {
-  getGallery();
-  getFilter();
-});
-
+/**
+ * fetch api
+ */
 async function getGallery() {
   await fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
@@ -14,7 +8,8 @@ async function getGallery() {
       displayGallery(data);
     });
 }
-// getGallery();
+getGallery();
+
 async function getFilter() {
   await fetch("http://localhost:5678/api/categories")
     .then((response) => response.json())
@@ -22,9 +17,12 @@ async function getFilter() {
       displayFilter(data);
     });
 }
-// getFilter();
+getFilter();
 
-// display all works
+/**
+ * display all works
+ * @param {*} data
+ */
 const displayGallery = (data) => {
   data.map((work) => {
     let figure = document.createElement("figure");
@@ -47,7 +45,10 @@ const displayGallery = (data) => {
   });
 };
 
-//display filters items
+/**
+ * display filters items
+ * @param {*} data
+ */
 const displayFilter = (data) => {
   document.querySelector(".filter-button").innerHTML += `
     <button class="btn active" id="all">
@@ -65,7 +66,9 @@ const displayFilter = (data) => {
   `;
   }
 
-  // add event listener filter
+  /**
+   * add event listener filter
+   */
   const btn = document.querySelectorAll(".btn");
   btn.forEach((button) => {
     button.addEventListener("click", function (e) {
@@ -74,7 +77,9 @@ const displayFilter = (data) => {
     });
   });
 
-  // Add active class to the current control button (highlight it)
+  /**
+   * Add active class to the current control button (highlight it)
+   */
   for (let i = 0; i < btn.length; i++) {
     btn[i].addEventListener("click", function (e) {
       let current = document.getElementsByClassName("active");
@@ -83,21 +88,27 @@ const displayFilter = (data) => {
       e.stopImmediatePropagation();
     });
   }
-
   filterSelection("");
 };
 
-//display with listener
+/**
+ * display with listener
+ * @param {*} c
+ */
 function filterSelection(c) {
   let x, i;
   x = document.getElementsByClassName("filter-gallery");
-  // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
   for (i = 0; i < x.length; i++) {
     RemoveClass(x[i], "show");
     if (x[i].className.indexOf(c) > -1) AddClass(x[i], "show");
   }
 }
-// Show filtered elements
+
+/**
+ * Show filtered elements
+ * @param {*} element
+ * @param {*} name
+ */
 function AddClass(element, name) {
   let i, arr1, arr2;
   arr1 = element.className.split(" ");
@@ -109,7 +120,11 @@ function AddClass(element, name) {
   }
 }
 
-// Hide elements that are not selected
+/**
+ * Hide elements that are not selected
+ * @param {*} element
+ * @param {*} name
+ */
 function RemoveClass(element, name) {
   let i, arr1, arr2;
   arr1 = element.className.split(" ");
@@ -121,12 +136,22 @@ function RemoveClass(element, name) {
   }
   element.className = arr1.join(" ");
 }
-//localstorage
+
+/**
+ *localstorage
+ */
+let logout = document.getElementsByTagName("li")[2];
 let userId = localStorage.getItem("userId");
 if (userId == 1) {
+  logout.textContent = "logout";
   const hide = document.querySelectorAll(".hide");
 
   for (let i = 0; i < hide.length; i++) {
     hide[i].style.display = "flex";
   }
 }
+
+logout.addEventListener("click", () => {
+  localStorage.clear();
+  window.location.reload();
+});

@@ -1,35 +1,43 @@
-//display and close modalContainer
+/**
+ * display and close modalContainer
+ */
 let containerModal = document.getElementById("containerModal");
 let modalGallery = document.getElementById("modalGallery");
 
-//display gallery modal
+/**
+ * display gallery modal
+ */
 let iconAdd = document.getElementById("buttonAdd");
 iconAdd.addEventListener("click", () => {
   containerModal.style.display = "block";
 });
 
-//close modal gallery
+/**
+ * close modal gallery
+ */
 let crossClose = document.getElementsByClassName("close")[0];
 crossClose.addEventListener("click", () => {
   containerModal.style.display = "none";
 });
 
-//close modal gallery
 document.addEventListener("click", function (event) {
   if (event.target == containerModal) {
-    console.log(event.currentTarget);
     dragModal.style.display = null;
     modalGallery.style.display = "flex";
     containerModal.style.display = "none";
   }
 });
 
-//Switch modal drag -> modal gallery
 let arrow = document.querySelector(".arrow-left");
 arrow.addEventListener("click", () => {
   switchModal(modalGallery, dragModal, false);
 });
-
+/**
+ * Switch modal drag -> modal gallery
+ * @param {*} firstElement
+ * @param {*} secondElement
+ * @param {*} action
+ */
 function switchModal(firstElement, secondElement, action) {
   if (action === true) {
     firstElement.style.display = "none";
@@ -40,7 +48,9 @@ function switchModal(firstElement, secondElement, action) {
   }
 }
 
-//close modal drag, open modal gallery et close all
+/**
+ *close modal drag, open modal gallery et close all
+ */
 let crossCloseDrag = document.getElementsByClassName("close")[1];
 crossCloseDrag.addEventListener("click", () => {
   dragModal.style.display = "none";
@@ -48,7 +58,9 @@ crossCloseDrag.addEventListener("click", () => {
   containerModal.style.display = "none";
 });
 
-//create add Modal
+/**
+ * create add Modal
+ */
 let buttonAdd = document.querySelector("#addImage");
 let dragModal = document.querySelector("#dragContainer");
 
@@ -57,24 +69,34 @@ buttonAdd.addEventListener("click", () => {
   dragModal.style.display = "flex";
 });
 
-//Import images modal-container
+/**
+ * Import images modal-container
+ */
 const url = "http://localhost:5678/api/works";
 
-fetch(url)
-  .then((resp) => resp.json())
-  .then(function (data) {
-    displayGalleryModale(data);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+async function importImageModal() {
+  await fetch(url)
+    .then((resp) => resp.json())
+    .then(function (data) {
+      displayGalleryModale(data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+importImageModal();
 
+/**
+ * display gallery modal
+ * @param {*} data
+ */
 function displayGalleryModale(data) {
   let mySet = new Set(data);
 
   for (let work of mySet) {
     let figure = document.createElement("figure");
-    figure.className = "filter-gallery";
+    figure.className = "card-gallery";
+    figure.dataset.id = work.id;
 
     let img = document.createElement("img");
     img.src = work.imageUrl;
@@ -97,12 +119,22 @@ function displayGalleryModale(data) {
     figure.appendChild(figcaption);
     let galleryModale = document.querySelector(".gallery-modale");
     galleryModale.appendChild(figure);
+
+    let arrowMulti = document.createElement("span");
+    arrowMulti.classList.add("arrow-multi");
+    arrowMulti.innerHTML =
+      '<i class="fa-solid fa-up-down-left-right fa-2xs"></i>';
+    let firstImage = document.getElementsByClassName("card-gallery")[0];
+    firstImage.appendChild(arrowMulti);
   }
 }
 
-// Delete image modal-container
-function deleteImage(id) {
-  fetch(`http://localhost:5678/api/works/${id}`, {
+/**
+ * Delete image modal-container
+ * @param {*} id
+ */
+async function deleteImage(id) {
+  await fetch(`http://localhost:5678/api/works/${id}`, {
     method: "DELETE",
     headers: {
       Accept: "*/*",
@@ -111,7 +143,25 @@ function deleteImage(id) {
   });
 }
 
-// check image format
+/**
+ * Delete all image
+ */
+let buttonDeleteAll = document.querySelector("#delete-gallery");
+buttonDeleteAll.addEventListener("click", function () {
+  deleteAllWorks();
+});
+
+const deleteAllWorks = () => {
+  const works = document.querySelectorAll(".filter-gallery");
+  works.forEach((work) => {
+    // deleteProject(work.dataset.id);
+    console.log(work.dataset.id);
+  });
+};
+
+/**
+ * check image format
+ */
 let validPicture = false;
 let buttonAddImage = document.querySelector("#addImage");
 buttonAddImage.addEventListener("click", function (event) {
@@ -129,7 +179,6 @@ buttonAddImage.addEventListener("click", function (event) {
         file.type.startsWith("image/jpg")) &&
       file.size < maxSize
     ) {
-      // binary format
       const reader = new FileReader();
 
       reader.addEventListener("load", () => {
@@ -149,18 +198,20 @@ buttonAddImage.addEventListener("click", function (event) {
   });
 });
 
-// listen and submit the picture
+/**
+ * listen and submit the picture
+ */
 let submit = document.querySelector("#submit");
 
 submit.addEventListener("click", function (event) {
   if (validPicture) {
-    sendWork();
+    sendPicture();
     event.stopPropagation();
     event.preventDefault();
   }
 });
 
-async function sendWork() {
+async function sendPicture() {
   const imageFile = document.getElementById("addNewPicture");
   const title = document.getElementById("title");
   const category = document.getElementById("modalCategory");
@@ -170,10 +221,9 @@ async function sendWork() {
   formData.append("title", title.value);
   formData.append("category", category.value);
 
-  await fetch("http://localhost:5678/api/works", {
+  await fetch(url, {
     method: "POST",
     headers: {
-      // enctype: "multipart/form-data",
       Accept: "application/json",
       Authorization: "Bearer " + localStorage.getItem("token"),
     },
@@ -181,6 +231,5 @@ async function sendWork() {
   }).then((response) => {
     let result = response.json;
     alert(result.message);
-    //pas oublier message bien reçu
   });
 }
