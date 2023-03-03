@@ -165,7 +165,8 @@ h2 {
 }
 
 /* Mode edition */
-.container-hide {
+.hide.container-hide {
+  width: 100%;
   display: none;
   justify-content: center;
   align-items: center;
@@ -185,6 +186,11 @@ h2 {
   border: 0;
   font-size: 14px;
   display: none;
+  background-color: transparent;
+  align-items: center;
+}
+.hide b {
+  padding-left: 8px;
 }
 #introduction figure,
 #introduction article {
@@ -201,12 +207,17 @@ h2 {
 }
 #portfolio {
   margin-top: 139px;
-  position: relative;
 }
-#portfolio .hide {
+#portfolio .project {
+  position: relative;
+  width: 300px;
+  margin: auto;
+}
+
+#portfolio .project .hide {
   position: absolute;
-  top: 5px;
-  left: 37rem;
+  right: -40px;
+  top: 10px;
 }
 
 /* Header */
@@ -237,19 +248,15 @@ a {
   margin-top: 139px;
 }
 #introduction figure {
-  /* flex: 1; */
   max-width: 474px;
   height: 313;
 }
 #introduction img {
   height: 355px;
   object-fit: cover;
-  /* display: block;
-  margin: auto;*/
 }
 #introduction article {
   position: relative;
-  /* flex: 1; */
   width: 404px;
 }
 #introduction h2 {
@@ -258,8 +265,8 @@ a {
 #introduction p {
   margin-bottom: 0.5em;
 }
-/* Works */
 
+/* Works */
 #portfolio h2 {
   text-align: center;
   margin-bottom: 2em;
@@ -362,6 +369,5 @@ input[type="submit"] {
 footer nav ul {
   display: flex;
   justify-content: flex-end;
-  /* margin: 2em; */
   margin: 0 107px 2em auto;
 }

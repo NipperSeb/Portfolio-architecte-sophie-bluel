@@ -37,7 +37,6 @@ let button = form.submit.addEventListener("click", (e) => {
         error.innerText = "Erreur dans l'identifiant ou le mot de passe";
       } else {
         loginOk(data.userId, data.token);
-        console.log(data);
       }
     })
     .catch((error) => {
@@ -46,11 +45,11 @@ let button = form.submit.addEventListener("click", (e) => {
 });
 
 /**
- * Store items loacstorage
+ * Store items localstorage
  * @param {*} datas
  */
 function loginOk(id, token) {
-  localStorage.setItem("token", token);
-  localStorage.setItem("userId", id);
+  sessionStorage.setItem("token", token);
+  sessionStorage.setItem("userId", id);
   document.location.href = "../../index.html";
 }

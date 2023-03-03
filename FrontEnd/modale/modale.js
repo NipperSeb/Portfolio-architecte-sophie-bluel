@@ -1,15 +1,18 @@
 /**
  * display and close modalContainer
  */
-let containerModal = document.getElementById("containerModal");
+let containerModal = document.querySelector(".modal-container");
 let modalGallery = document.getElementById("modalGallery");
 
 /**
  * display gallery modal
  */
 let iconAdd = document.getElementById("buttonAdd");
-iconAdd.addEventListener("click", () => {
-  containerModal.style.display = "block";
+iconAdd.addEventListener("click", (e) => {
+  e.preventDefault();
+  containerModal.style.visibility =
+    containerModal.style.visibility == "visible" ? "hidden" : "visible";
+  document.body.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
 });
 
 /**
@@ -17,36 +20,26 @@ iconAdd.addEventListener("click", () => {
  */
 let crossClose = document.getElementsByClassName("close")[0];
 crossClose.addEventListener("click", () => {
-  containerModal.style.display = "none";
+  containerModal.style.visibility =
+    containerModal.style.visibility == "visible" ? "hidden" : "visible";
+  document.body.style.backgroundColor = "";
 });
 
 document.addEventListener("click", function (event) {
   if (event.target == containerModal) {
     dragModal.style.display = null;
     modalGallery.style.display = "flex";
-    containerModal.style.display = "none";
+    containerModal.style.visibility =
+      containerModal.style.visibility == "visible" ? "hidden" : "visible";
+    document.body.style.backgroundColor = "";
   }
 });
 
 let arrow = document.querySelector(".arrow-left");
 arrow.addEventListener("click", () => {
-  switchModal(modalGallery, dragModal, false);
+  dragModal.style.display = "none";
+  modalGallery.style.display = "flex";
 });
-/**
- * Switch modal drag -> modal gallery
- * @param {*} firstElement
- * @param {*} secondElement
- * @param {*} action
- */
-function switchModal(firstElement, secondElement, action) {
-  if (action === true) {
-    firstElement.style.display = "none";
-    secondElement.style.display = "block";
-  } else {
-    firstElement.style.display = "flex";
-    secondElement.styleDisplay = "none";
-  }
-}
 
 /**
  *close modal drag, open modal gallery et close all
@@ -108,9 +101,9 @@ function displayGalleryModale(data) {
     let trash = document.createElement("span");
     trash.classList.add("trash-button");
     trash.addEventListener("click", function (event) {
+      event.preventDefault();
       let idStr = work.id;
       deleteImage(idStr);
-      event.stopImmediatePropagation();
     });
     trash.innerHTML = '<i class="fa-regular fa-trash-can fa-2xs"></i>';
 
@@ -138,7 +131,7 @@ async function deleteImage(id) {
     method: "DELETE",
     headers: {
       Accept: "*/*",
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   });
 }
@@ -198,6 +191,18 @@ buttonAddImage.addEventListener("click", function (event) {
   });
 });
 
+const form = document.querySelector("uploadImage");
+form.addEventListener("change", checkItems);
+function checkItems() {
+  const imageFile = document.getElementById("addNewPicture").files[0];
+  const title = document.getElementById("title").value;
+  const category = document.getElementById("modalCategory").value;
+  if (imageFile && title && category !== 0) {
+    colorSubmit = document.querySelector("#submit");
+    colorSubmit.style.backgroundColor = "#1D6154";
+  }
+}
+
 /**
  * listen and submit the picture
  */
@@ -225,7 +230,7 @@ async function sendPicture() {
     method: "POST",
     headers: {
       Accept: "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
     body: formData,
   }).then((response) => {
