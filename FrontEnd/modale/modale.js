@@ -42,14 +42,30 @@ arrow.addEventListener("click", () => {
 });
 
 /**
- *close modal drag, open modal gallery et close all
+ *close modal drag and reset form
  */
 let crossCloseDrag = document.getElementsByClassName("close")[1];
-crossCloseDrag.addEventListener("click", () => {
-  dragModal.style.display = "none";
-  modalGallery.style.display = "flex";
-  containerModal.style.display = "none";
+crossCloseDrag.addEventListener("click", (e) => {
+  cleanForm();
 });
+function cleanForm() {
+  const form = document.querySelector("#uploadImage");
+  form.reset();
+  const newImage = document.getElementById("newImage");
+  let clear = document.querySelectorAll(".clear");
+  for (let item of clear) {
+    item.style.display = "block";
+  }
+  newImage.style.display = "none";
+  colorSubmit = document.querySelector("#submit");
+  colorSubmit.style.backgroundColor = "#a7a7a7";
+
+  dragModal.style.display = null;
+  modalGallery.style.display = "flex";
+  containerModal.style.visibility =
+    containerModal.style.visibility == "visible" ? "hidden" : "visible";
+  document.body.style.backgroundColor = "";
+}
 
 /**
  * create add Modal
@@ -131,7 +147,7 @@ async function deleteImage(id) {
     method: "DELETE",
     headers: {
       Accept: "*/*",
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
+      Authorization: "Bearer " + localStorage.getItem("token"),
     },
   });
 }
@@ -161,8 +177,11 @@ buttonAddImage.addEventListener("click", function (event) {
   const input = document.getElementById("addNewPicture");
   const preview = document.getElementById("image");
   const newImage = document.getElementById("newImage");
+
   const maxSize = 4194304; // 4mo
   let clear = document.querySelectorAll(".clear");
+  input.value = "";
+
   input.addEventListener("change", () => {
     const file = input.files[0];
 
@@ -191,15 +210,18 @@ buttonAddImage.addEventListener("click", function (event) {
   });
 });
 
-const form = document.querySelector("uploadImage");
+const form = document.querySelector("#uploadImage");
 form.addEventListener("change", checkItems);
 function checkItems() {
-  const imageFile = document.getElementById("addNewPicture").files[0];
+  // const imageFile = document.getElementById("addNewPicture").files[0];
+  const imageFile = document.getElementById("addNewPicture").files;
   const title = document.getElementById("title").value;
   const category = document.getElementById("modalCategory").value;
-  if (imageFile && title && category !== 0) {
-    colorSubmit = document.querySelector("#submit");
+  colorSubmit = document.querySelector("#submit");
+  if (imageFile.length != 0 && title != "" && category != "") {
     colorSubmit.style.backgroundColor = "#1D6154";
+  } else {
+    colorSubmit.style.backgroundColor = "#a7a7a7";
   }
 }
 
@@ -211,7 +233,10 @@ let submit = document.querySelector("#submit");
 submit.addEventListener("click", function (event) {
   if (validPicture) {
     sendPicture();
-    event.stopPropagation();
+    const image = document.getElementById("image");
+    image.setAttribute("src", "");
+    window.location.reload();
+    // event.stopPropagation();
     event.preventDefault();
   }
 });
@@ -230,11 +255,15 @@ async function sendPicture() {
     method: "POST",
     headers: {
       Accept: "application/json",
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
+      Authorization: "Bearer " + localStorage.getItem("token"),
     },
     body: formData,
-  }).then((response) => {
-    let result = response.json;
-    alert(result.message);
-  });
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }

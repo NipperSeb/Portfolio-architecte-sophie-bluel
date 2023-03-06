@@ -141,7 +141,7 @@ function RemoveClass(element, name) {
  *localstorage
  */
 let logout = document.getElementsByTagName("li")[2];
-let userId = sessionStorage.getItem("userId");
+let userId = localStorage.getItem("userId");
 if (userId == 1) {
   logout.textContent = "logout";
   const hide = document.querySelectorAll(".hide");
@@ -152,6 +152,6 @@ if (userId == 1) {
 }
 
 logout.addEventListener("click", () => {
-  sessionStorage.clear();
+  localStorage.clear();
   window.location.reload();
 });

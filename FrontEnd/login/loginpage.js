@@ -49,7 +49,7 @@ let button = form.submit.addEventListener("click", (e) => {
  * @param {*} datas
  */
 function loginOk(id, token) {
-  sessionStorage.setItem("token", token);
-  sessionStorage.setItem("userId", id);
+  localStorage.setItem("token", token);
+  localStorage.setItem("userId", id);
   document.location.href = "../../index.html";
 }
