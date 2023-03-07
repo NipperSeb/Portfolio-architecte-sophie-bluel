@@ -6,6 +6,7 @@
   padding: 0;
 }
 .modal-container {
+  display: none;
   visibility: hidden;
   position: absolute;
   left: 0;

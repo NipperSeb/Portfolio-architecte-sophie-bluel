@@ -1,15 +1,18 @@
 /**
- * fetch api
+ * fetch api and dispatch gallery landpage and modal
  */
 async function getGallery() {
-  await fetch("http://localhost:5678/api/works")
+  fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
     .then((data) => {
       displayGallery(data);
+      displayGalleryModale(data);
     });
 }
 getGallery();
-
+/**
+ * retrieve filters
+ */
 async function getFilter() {
   await fetch("http://localhost:5678/api/categories")
     .then((response) => response.json())
@@ -72,6 +75,8 @@ const displayFilter = (data) => {
   const btn = document.querySelectorAll(".btn");
   btn.forEach((button) => {
     button.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
       let idStr = this.id;
       filterSelection(idStr);
     });
@@ -86,6 +91,7 @@ const displayFilter = (data) => {
       current[0].className = current[0].className.replace(" active", "");
       this.className += " active";
       e.stopImmediatePropagation();
+      e.preventDefault();
     });
   }
   filterSelection("");

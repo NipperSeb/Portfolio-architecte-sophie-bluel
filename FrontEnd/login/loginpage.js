@@ -52,4 +52,5 @@ function loginOk(id, token) {
   localStorage.setItem("token", token);
   localStorage.setItem("userId", id);
   document.location.href = "../../index.html";
+  getGallery();
 }

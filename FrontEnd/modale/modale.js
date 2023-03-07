@@ -10,6 +10,8 @@ let modalGallery = document.getElementById("modalGallery");
 let iconAdd = document.getElementById("buttonAdd");
 iconAdd.addEventListener("click", (e) => {
   e.preventDefault();
+  e.stopPropagation();
+  containerModal.style.display = "block";
   containerModal.style.visibility =
     containerModal.style.visibility == "visible" ? "hidden" : "visible";
   document.body.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
@@ -19,35 +21,44 @@ iconAdd.addEventListener("click", (e) => {
  * close modal gallery
  */
 let crossClose = document.getElementsByClassName("close")[0];
-crossClose.addEventListener("click", () => {
+crossClose.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
   containerModal.style.visibility =
     containerModal.style.visibility == "visible" ? "hidden" : "visible";
   document.body.style.backgroundColor = "";
+  containerModal.style.display = "none";
 });
 
 document.addEventListener("click", function (event) {
+  event.stopPropagation();
   if (event.target == containerModal) {
     dragModal.style.display = null;
     modalGallery.style.display = "flex";
     containerModal.style.visibility =
       containerModal.style.visibility == "visible" ? "hidden" : "visible";
     document.body.style.backgroundColor = "";
+    containerModal.style.display = "none";
   }
 });
 
 let arrow = document.querySelector(".arrow-left");
-arrow.addEventListener("click", () => {
+arrow.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
   dragModal.style.display = "none";
   modalGallery.style.display = "flex";
 });
 
+let crossCloseDrag = document.getElementsByClassName("close")[1];
+crossCloseDrag.addEventListener("click", (e) => {
+  e.preventDefault;
+  e.stopPropagation();
+  cleanForm();
+});
 /**
  *close modal drag and reset form
  */
-let crossCloseDrag = document.getElementsByClassName("close")[1];
-crossCloseDrag.addEventListener("click", (e) => {
-  cleanForm();
-});
 function cleanForm() {
   const form = document.querySelector("#uploadImage");
   form.reset();
@@ -73,27 +84,12 @@ function cleanForm() {
 let buttonAdd = document.querySelector("#addImage");
 let dragModal = document.querySelector("#dragContainer");
 
-buttonAdd.addEventListener("click", () => {
+buttonAdd.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
   modalGallery.style.display = "none";
   dragModal.style.display = "flex";
 });
-
-/**
- * Import images modal-container
- */
-const url = "http://localhost:5678/api/works";
-
-async function importImageModal() {
-  await fetch(url)
-    .then((resp) => resp.json())
-    .then(function (data) {
-      displayGalleryModale(data);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
-importImageModal();
 
 /**
  * display gallery modal
@@ -116,8 +112,10 @@ function displayGalleryModale(data) {
 
     let trash = document.createElement("span");
     trash.classList.add("trash-button");
+
     trash.addEventListener("click", function (event) {
       event.preventDefault();
+      event.stopPropagation();
       let idStr = work.id;
       deleteImage(idStr);
     });
@@ -149,7 +147,16 @@ async function deleteImage(id) {
       Accept: "*/*",
       Authorization: "Bearer " + localStorage.getItem("token"),
     },
-  });
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log(response.ok);
+        document.querySelector(`[data-id]="${id}"`).remove();
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 /**
@@ -159,12 +166,10 @@ let buttonDeleteAll = document.querySelector("#delete-gallery");
 buttonDeleteAll.addEventListener("click", function () {
   deleteAllWorks();
 });
-
 const deleteAllWorks = () => {
-  const works = document.querySelectorAll(".filter-gallery");
+  const works = document.querySelectorAll(".card-gallery");
   works.forEach((work) => {
-    // deleteProject(work.dataset.id);
-    console.log(work.dataset.id);
+    deleteImage(work.dataset.id);
   });
 };
 
@@ -174,15 +179,19 @@ const deleteAllWorks = () => {
 let validPicture = false;
 let buttonAddImage = document.querySelector("#addImage");
 buttonAddImage.addEventListener("click", function (event) {
-  const input = document.getElementById("addNewPicture");
-  const preview = document.getElementById("image");
-  const newImage = document.getElementById("newImage");
+  event.preventDefault();
+  event.stopPropagation();
+  let input = document.getElementById("addNewPicture");
+  let preview = document.getElementById("image");
+  let newImage = document.getElementById("newImage");
 
   const maxSize = 4194304; // 4mo
   let clear = document.querySelectorAll(".clear");
   input.value = "";
 
-  input.addEventListener("change", () => {
+  input.addEventListener("change", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const file = input.files[0];
 
     if (
@@ -193,7 +202,9 @@ buttonAddImage.addEventListener("click", function (event) {
     ) {
       const reader = new FileReader();
 
-      reader.addEventListener("load", () => {
+      reader.addEventListener("load", (e) => {
+        e.preventDefault;
+        e.stopPropagation();
         preview.src = reader.result;
         for (let item of clear) {
           item.style.display = "none";
@@ -210,10 +221,16 @@ buttonAddImage.addEventListener("click", function (event) {
   });
 });
 
+/**
+ * Change color button submit
+ * @param {*} e
+ */
 const form = document.querySelector("#uploadImage");
+const url = "http://localhost:5678/api/works";
 form.addEventListener("change", checkItems);
-function checkItems() {
-  // const imageFile = document.getElementById("addNewPicture").files[0];
+function checkItems(e) {
+  e.preventDefault();
+  e.stopPropagation();
   const imageFile = document.getElementById("addNewPicture").files;
   const title = document.getElementById("title").value;
   const category = document.getElementById("modalCategory").value;
@@ -225,23 +242,19 @@ function checkItems() {
   }
 }
 
+form.addEventListener("submit", submitFormAjax);
 /**
- * listen and submit the picture
+ * send formdata
+ * @param {*} event
  */
-let submit = document.querySelector("#submit");
-
-submit.addEventListener("click", function (event) {
+async function submitFormAjax(event) {
+  event.preventDefault();
+  event.stopPropagation();
   if (validPicture) {
-    sendPicture();
     const image = document.getElementById("image");
     image.setAttribute("src", "");
-    window.location.reload();
-    // event.stopPropagation();
-    event.preventDefault();
   }
-});
 
-async function sendPicture() {
   const imageFile = document.getElementById("addNewPicture");
   const title = document.getElementById("title");
   const category = document.getElementById("modalCategory");
@@ -259,11 +272,20 @@ async function sendPicture() {
     },
     body: formData,
   })
-    .then((response) => response.json())
+    .then((response) => {
+      confirm("Souhaitez-vous envoyer cet élément?");
+
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(response.statusText);
+      }
+    })
     .then((data) => {
       console.log("Success:", data);
     })
     .catch((error) => {
       console.error("Error:", error);
     });
+  form.reset();
 }
