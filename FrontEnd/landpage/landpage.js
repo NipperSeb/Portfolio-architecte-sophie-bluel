@@ -1,24 +1,21 @@
 /**
  * fetch api and dispatch gallery landpage and modal
  */
+
 async function getGallery() {
-  fetch("http://localhost:5678/api/works")
-    .then((response) => response.json())
-    .then((data) => {
-      displayGallery(data);
-      displayGalleryModale(data);
-    });
+  const response = await fetch("http://localhost:5678/api/works");
+  const works = await response.json();
+  displayGallery(works);
+  displayGalleryModale(works);
 }
 getGallery();
 /**
  * retrieve filters
  */
 async function getFilter() {
-  await fetch("http://localhost:5678/api/categories")
-    .then((response) => response.json())
-    .then((data) => {
-      displayFilter(data);
-    });
+  const response = await fetch("http://localhost:5678/api/categories");
+  const filter = await response.json();
+  displayFilter(filter);
 }
 getFilter();
 

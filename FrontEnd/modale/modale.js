@@ -141,22 +141,19 @@ function displayGalleryModale(data) {
  * @param {*} id
  */
 async function deleteImage(id) {
-  await fetch(`http://localhost:5678/api/works/${id}`, {
-    method: "DELETE",
-    headers: {
-      Accept: "*/*",
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-  })
-    .then((response) => {
-      if (response.ok) {
-        console.log(response.ok);
-        document.querySelector(`[data-id]="${id}"`).remove();
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
+  document.querySelector(`[data-id="${id}"]`).remove();
+
+  try {
+    await fetch(`http://localhost:5678/api/works/${id}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "*/*",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
     });
+  } catch (err) {
+    alert(err);
+  }
 }
 
 /**
@@ -253,6 +250,8 @@ async function submitFormAjax(event) {
   if (validPicture) {
     const image = document.getElementById("image");
     image.setAttribute("src", "");
+  } else {
+    return;
   }
 
   const imageFile = document.getElementById("addNewPicture");
@@ -264,28 +263,20 @@ async function submitFormAjax(event) {
   formData.append("title", title.value);
   formData.append("category", category.value);
 
-  await fetch(url, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-    body: formData,
-  })
-    .then((response) => {
-      confirm("Souhaitez-vous envoyer cet élément?");
-
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error(response.statusText);
-      }
-    })
-    .then((data) => {
-      console.log("Success:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
+  try {
+    let response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+      body: formData,
     });
-  form.reset();
+    await response.json();
+    confirm("Projet ajouté");
+    form.reset();
+    getGallery();
+  } catch (error) {
+    alert(error);
+  }
 }
